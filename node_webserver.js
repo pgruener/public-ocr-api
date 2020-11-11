@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
       <h1>Texterkennung in PDFs</h1>
 
       <p>
-        Der Dienst akzeptiert Bildmaterial und vorverarbeitet es mit den folgenden Routinen:
+        Der Dienst akzeptiert PDF Dokumente und vorverarbeitet es mit den folgenden Routinen:
       </p>
 
       <ul>
@@ -36,8 +36,8 @@ app.get('/', (req, res) => {
         Info: Sowohl die hochgeladenen Dokumente, als auch die verarbeiteten Ergebnisse werden unmittelbar
         nach Beendigung der Anfrage restlos gelöscht.
       </p>
-      <p>
 
+      <p>
         Die Spracherkennung erfolgt aktuell nur in deutsch.
       </p>
 
@@ -46,7 +46,7 @@ app.get('/', (req, res) => {
         (Jetzt limitiert auf die ersten drei Seiten).
       </p>
 
-      <form method="post" enctype="multipart/form-data" action="/imageToJSON">
+      <form method="post" enctype="multipart/form-data" action="/pdfToJSON">
         <label for="file">Dokument zum Hochladen wählen</label>
         <input type="file" name="file">
         <input type="submit" value="Hochladen und verarbeiten">
@@ -59,7 +59,7 @@ app.get('/', (req, res) => {
   </html>`);
 });
 
-app.post('/imageToJSON', urlencodedParser, (req, res) => {
+app.post('/pdfToJSON', urlencodedParser, (req, res) => {
   if (!req.files || !req.files.file) {
     res.setHeader('Content-Type', 'text/plain')
     res.writeHead('400');
