@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
     </head>
 
     <body>
-      <h1>Texterkennung in Bild / PDF</h1>
+      <h1>Texterkennung in PDFs</h1>
 
       <p>
         Der Dienst akzeptiert Bildmaterial und vorverarbeitet es mit den folgenden Routinen:
