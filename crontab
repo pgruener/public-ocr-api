@@ -1,0 +1,4 @@
+# Removes temporary files every day at 01:09:00
+9 1 * * * /bin/bash -l -c 'rm -rf /tmp/com.github.ocrmypdf.*'
+
+# End of base container crons
