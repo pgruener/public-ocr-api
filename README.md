@@ -6,10 +6,7 @@
 `via browser: http://localhost:5000`
 
 ## or on command line
-`curl  -F 'file=@/filepath.pdf' -F 'params=' http://localhost:5000 --output filepath_out.pdf`
-
-
-
+`curl  -F 'file=@/filepath.pdf' -F http://localhost:5000 --output /filepath_out.pdf`
 
 
 # building
