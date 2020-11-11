@@ -1,6 +1,6 @@
 
 run it with
-# docker run -t -i -p 5000:5000 registry.gitlab.com/rs-pub/ocr_doc_reader:v0.0.0
+# docker run -d -p 5000:5000 registry.gitlab.com/rs-pub/ocr_doc_reader:v0.0.0
 
 try it
 # via browser: http://127.0.0.1:5000

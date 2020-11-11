@@ -25,11 +25,6 @@ app.get('/', (req, res) => {
         Der Dienst akzeptiert Bildmaterial und vorverarbeitet es mit den folgenden Routinen:
       </p>
 
-      <p>
-        Sowohl die hochgeladenen Dokumente, als auch die verarbeiteten Ergebnisse werden unmittelbar
-        nach Beendigung der Anfrage restlos gelöscht.
-      </p>
-
       <ul>
         <li>Rotiert das Bild, wenn erkannt wurde, dass es falsch herum liegt.</li>
         <li>Rückt es in die richtige Proportion, falls es aus einem schrägen Winkel aufgenommen wurde.</li>
@@ -38,6 +33,11 @@ app.get('/', (req, res) => {
       </ul>
 
       <p>
+        Info: Sowohl die hochgeladenen Dokumente, als auch die verarbeiteten Ergebnisse werden unmittelbar
+        nach Beendigung der Anfrage restlos gelöscht.
+      </p>
+      <p>
+
         Die Spracherkennung erfolgt aktuell nur in deutsch.
       </p>
 
