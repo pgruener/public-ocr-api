@@ -8,7 +8,7 @@ RUN apt-get -y install imagemagick
 RUN apt-get -y install curl gnupg imagemagick
 RUN curl -sL https://deb.nodesource.com/setup_15.x  | bash -
 RUN apt-get -y install nodejs
-RUN /usr/bin/npm install --save child_process fs express express-fileupload body-parser
+RUN /usr/bin/npm install --save child_process fs express express-fileupload body-parser ejs
 
 # install crontab
 ###############################################################
@@ -19,5 +19,8 @@ RUN su - root -c "crontab /tmp/crontab"
 RUN rm /tmp/crontab
 ###
 
+COPY views /app/views
+COPY assets /app/assets
 COPY node_webserver.js /app
+
 ENTRYPOINT ["/usr/bin/node", "/app/node_webserver"]
