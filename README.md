@@ -21,3 +21,9 @@
 Previously to delete: docker rm -f `docker container ls -f "ancestor=ocr:latest" -q`
 `docker build -t ocr .`
 `docker run -d -p 5000:5000 ocr:latest`
+
+quick:
+docker rm -f `docker container ls -f "ancestor=ocr:latest" -q` && docker build -t ocr . && docker run -d -p 5000:5000 ocr:latest
+
+log into quickly
+docker exec -it `docker container ls -f "ancestor=ocr:latest" -q` /bin/bash

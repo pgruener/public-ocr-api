@@ -1,0 +1,14 @@
+upload_form_h1: OCR Text recognition
+sandbox_warning: |
+  <p>Attention: Sandbox!</p> 
+  <p>This OCR image is running as a Sandbox and therefore has very few system ressources.</p>
+  <p>This means, that the service is highly limited (and slow), but enough for evaluation purposes.</p>
+choose_file: Choose a file from your device.
+return_pdf: Instead of displaying the text results, download a PDF with inplaced letters
+language: Language
+languages:
+  de: German
+  en: English
+  fr: France
+  pt: Portuguese
+  es: Spanish
