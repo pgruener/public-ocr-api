@@ -112,33 +112,19 @@ app.post('/ocr/:version/parseDocument', urlencodedParser, (req, res) => {
   let fileExtension = uploadedFile.name.indexOf('.') ? uploadedFile.name.match(/(\.[^.]+)$/)[1] : '';
   let filenameRandom = Math.floor(Math.random() * 9999999);
   let sourceFile = `/tmp/uploads/${filenameRandom}${fileExtension}`;
+  let returnPdf = !!req.body.returnPdf;
   
   fs.writeFileSync(sourceFile, uploadedFile.data);
 
-  // // convert to jpg if image with possible alpha was given
-  // if (fileExtension.match(/(\.png|\.tiff)$/)) {
-  //   try {
-  //     let altSourceFile = `/tmp/uploads/${filenameRandom}.jpg`;
-  //     fileExtension = '.jpg';
-  //     execSync(`convert ${sourceFile} ${altSourceFile}`);
-  //     exec(`rm ${sourceFile}`);
-
-  //     sourceFile = altSourceFile;
-
-  //   } catch(e) {
-  //     log(e, res);
-  //   }
-  // }
-
-
+  // prepare binary call
   let cmdArguments = [
     '--keep-temporary-files',
     '--force-ocr',
     '--rotate-pages',
     '--deskew',
     '--clean',
-    '--remove-vectors',
-    '--output-type pdfa'
+    '--fast-web-view 0',
+    '--remove-vectors'
   ];
 
   let fromPage = req.body.fromPage;
@@ -146,6 +132,12 @@ app.post('/ocr/:version/parseDocument', urlencodedParser, (req, res) => {
 
   if (fromPage || toPage) {
     cmdArguments.push(`--pages ${parseInt(fromPage || 1)}-${parseInt(toPage || 99)}`);
+  }
+
+  if (returnPdf) {
+    cmdArguments.push('--output-type pdfa');
+  } else {
+    cmdArguments.push('--output-type pdf');
   }
 
   // Language determination / mapping /////////////////////////
@@ -173,26 +165,35 @@ app.post('/ocr/:version/parseDocument', urlencodedParser, (req, res) => {
     res: res,
     sourceFile: sourceFile,
     outFile: `/tmp/uploads/${filenameRandom}_out${fileExtension}`,
-    returnPdf: !!req.body.returnPdf
+    returnPdf: returnPdf
   }, cmdArguments);
   
 });
 
 function callOcr(opts, cmdArguments) {
   exec(`/usr/local/bin/ocrmypdf ${cmdArguments.join(' ')} ${opts.sourceFile} ${opts.outFile} 2>&1`, (error, stdout) => {
+
     if (error || !stdout) {
       let errorMessage = error ? (error.message || 'No message') : 'No return value received from extracting command';
       if (stdout) {
         errorMessage += '\nresult:\n'+ stdout;
       }
 
-      let imageDpiFix = '--image-dpi 90';
+      if (!opts.retries && (    stdout.indexOf('Input file is an image, but the resolution (DPI) is not credible') > -1
+                            ||  stdout.indexOf('Input file is an image, but has no resolution (DPI) in its metadata') > -1
+                            ||  stdout.indexOf('DpiError') > -1
+                            ||  stdout.indexOf('UnsupportedImageFormatError') > -1)) {
 
-      if (stdout.indexOf('UnsupportedImageFormatError') > -1) {
-        log(opts.req, 'The given file has an unsupported format', opts.res);
-      } else if (stdout.indexOf('Input file is an image, but the resolution (DPI) is not credible') > -1 && cmdArguments.indexOf(imageDpiFix) === -1) {
-        // retry with a fixed resolution
-        cmdArguments.push(imageDpiFix);
+        opts.retries = (opts.retries || 0) + 1;
+        if (!opts.errorMessage) {
+          opts.errorMessage = '';
+        }
+
+        opts.errorMessage += 'Input file was an invalid image with alpha, with too small DPI or with unknown DPI; converting to pdf before ...\n';
+
+        execSync(`/usr/bin/convert -quality 100 -strip ${opts.sourceFile} ${opts.sourceFile}.pdf`);
+        opts.sourceFile = `${opts.sourceFile}.pdf`; // adjust source file
+
         callOcr(opts, cmdArguments);
       } else {
         log(opts.req, errorMessage, opts.res, { internalError: true });
@@ -252,7 +253,7 @@ function returnError(req, error, res, status) {
   if (req.is('json')) {
     res.end(JSON.stringify({ error: error }));
   } else {
-    res.end(res.render('error', { error: error }));
+    res.render('error', { error: error });
   }
 }
 

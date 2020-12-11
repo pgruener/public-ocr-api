@@ -19,6 +19,9 @@ RUN su - root -c "crontab /tmp/crontab"
 RUN rm /tmp/crontab
 ###
 
+
+RUN sed -i 's/<policy domain="coder" rights="none" pattern="PDF"/<policy domain="coder" rights="write" pattern="PDF"/' /etc/ImageMagick-6/policy.xml
+
 COPY views /app/views
 COPY assets /app/assets
 COPY data /app/data
