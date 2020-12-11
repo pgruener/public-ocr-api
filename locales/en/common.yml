@@ -1,4 +1,8 @@
 upload_form_h1: OCR Text recognition
+upload_form_h1: OCR Texterkennung
+title_upload_form: OCR text recognition for email attachments
+title_pages: Recognized pages - OCR text recognition
+title_error: An error occured - OCR text recognition
 sandbox_warning: |
   <p>Attention: Sandbox!</p> 
   <p>This OCR image is running as a Sandbox and therefore has very few system ressources.</p>

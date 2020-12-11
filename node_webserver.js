@@ -34,12 +34,6 @@ const OCR_SUPPORTED_LANGUAGES_ISO_9631 = OCR_SUPPORTED_LANGUAGES.map((lang_3) =>
 }).filter(el => !!el);
 
 
-i18next.init({
-  ns: ['common'],
-  defaultNS: 'common',
-  lng: OCR_SYSTEM_LANG,
-  fallbackLng: 'en'
-});
 
 /** init express **********************************************/
 const app = express();
@@ -51,11 +45,17 @@ app.use(fileUpload({
 }));
 
 // i18n
+i18next.init({
+  ns: ['common'],
+  defaultNS: 'common',
+  lng: OCR_SYSTEM_LANG,
+  fallbackLng: 'en'
+});
+
 i18next.
   use(middleware.LanguageDetector).init({
-    //preload: ['en', 'de'],
     order: ['querystring', 'header'],
-    lookupQuerystring: 'language'
+    lookupQuerystring: 'language' // Doesn't currently work, *lng* (the default) is used instead.
   });
 
 i18next.
@@ -63,17 +63,11 @@ i18next.
     initImmediate: false,
     fallbackLng: 'en',
     saveMissing: true,
-    // preload: fs.readdirSync(__dirname +'/locales')).filter((fileName) => {
-    //   let joinedPath = __dirname  +'/locales/'+ fileName;
-    //   let isDirectory = lstatSync(joinedPath).isDirectory()
-    //   return isDirectory
-    // }),
     backend: {
       loadPath: __dirname +'/locales/{{lng}}/{{ns}}.yml',
       addPath: __dirname +'/locales/{{lng}}/{{ns}}.missing.yml'
     }
   });
-
 
 app.use(
   middleware.handle(i18next, {
@@ -119,16 +113,17 @@ app.post('/ocr/:version/parseDocument', urlencodedParser, (req, res) => {
   // prepare binary call
   let cmdArguments = [
     '--keep-temporary-files',
+    '--optimize 0',
     '--force-ocr',
     '--rotate-pages',
     '--deskew',
     '--clean',
     '--fast-web-view 0',
-    '--remove-vectors'
+    // '--remove-vectors'
   ];
 
   let fromPage = req.body.fromPage;
-  let toPage = process.env.MAX_PAGES ? (parseInt(fromPage || 1) + parseInt(process.env.MAX_PAGES)) : req.body.toPage;
+  let toPage = process.env.MAX_PAGES ? (parseInt(fromPage || 1) + parseInt(process.env.MAX_PAGES) - (fromPage ? 0 : 1)) : req.body.toPage;
 
   if (fromPage || toPage) {
     cmdArguments.push(`--pages ${parseInt(fromPage || 1)}-${parseInt(toPage || 99)}`);
@@ -218,11 +213,11 @@ function callOcr(opts, cmdArguments) {
         }
       });
 
-      if (opts.req.is('json')) {
+      if (opts.req.accepts('json')) { // json
         opts.res.writeHead(201, { 'Content-Type': 'application/json' });
 
         if (opts.returnPdf) { // add full pdfa to response object
-          recognizedFile.Pdfa = fs.readFileSync(opts.outFile); // TODO: Encode with base64
+          recognizedFile.Pdfa = fs.readFileSync(opts.outFile, 'base64');
         }
 
         opts.res.end(JSON.stringify(recognizedFile, null, 3));
@@ -250,7 +245,7 @@ function callOcr(opts, cmdArguments) {
 function returnError(req, error, res, status) {
   res.status(status || 500);
 
-  if (req.is('json')) {
+  if (req.accepts('json')) {
     res.end(JSON.stringify({ error: error }));
   } else {
     res.render('error', { error: error });

@@ -28,4 +28,6 @@ COPY data /app/data
 COPY locales /app/locales
 COPY node_webserver.js /app
 
+VOLUME /var/log/ocr
+
 ENTRYPOINT ["/usr/bin/node", "/app/node_webserver"]

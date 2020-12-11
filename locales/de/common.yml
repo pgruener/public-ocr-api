@@ -1,7 +1,7 @@
 upload_form_h1: OCR Texterkennung
-title_upload_form: OCR Texterkennung für E-Mail Anhänge – Royal Software GmbH
-title_pages: Erkannte Seiten - OCR Texterkennung – Royal Software GmbH
-title_error: Fehler aufgetreten - OCR Texterkennung – Royal Software GmbH
+title_upload_form: OCR Texterkennung für E-Mail Anhänge
+title_pages: Erkannte Seiten - OCR Texterkennung
+title_error: Fehler aufgetreten - OCR Texterkennung
 sandbox_warning: |
   <p>Achtung: Sandbox!</p> 
   <p>Dieses OCR Image läuft als Sandbox und ist deshalb mit wenig Ressourcen ausgestattet.</p>
