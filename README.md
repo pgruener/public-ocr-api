@@ -17,6 +17,7 @@ OCRmyPDF itself makes use of HP/Googles tesseract library, which is a basic AI f
 a huge advantage, as it is a well maintained project, which is in use in many real-word use cases and provides
 [100s of trained langauge data](https://github.com/tesseract-ocr/tessdata).
 
+Refer the up-to-date API: https://www.postman.com/rs-public
 
 # What is **Public OCR API definition** (POAD)?
 
