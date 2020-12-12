@@ -1,7 +1,7 @@
 # Quick reference
 
 - Maintained by: [Royal Software GmbH](https://royal-software.de/email-ocr/)
-- Where to get help: [the Docker Community Forums](https://forums.docker.com/), [create a ticket on GitLab](https://github.com/pgruener/public-ocr-api)
+- Where to get help: [the Docker Community Forums](https://forums.docker.com/), [create a ticket on Github](https://github.com/pgruener/public-ocr-api)
 
 # What is Public OCR API? (POA)
 
@@ -12,6 +12,10 @@ service up and running in seconds.
 
 **POA** implements the **POAD** interface and uses [OCRmyPDF](https://github.com/jbarlow83/OCRmyPDF) under the
 hood, to perform the *real work* of OCR recognition.
+
+OCRmyPDF itself makes use of HP/Googles tesseract library, which is a basic AI for character recognition. That's
+a huge advantage, as it is a well maintained project, which is in use in many real-word use cases and provides
+[100s of trained langauge data](https://github.com/tesseract-ocr/tessdata).
 
 
 # What is the **Public OCR API definition** (POAD)?
@@ -94,7 +98,7 @@ Or if you made some changes in your own fork and are having trouble to start the
 
 The log is available through Docker's container log:
 
-    $ docker container logs -f \`docker container ls -f "ancestor=rspub/ocr-api:0.0.5" -q\`
+    $ docker container logs -f `docker container ls -f "ancestor=rspub/ocr-api:0.0.5" -q`
 
 # Container configuration with environment variables
 
@@ -146,8 +150,21 @@ most for you.
 
 # Install more languages
 
-    TODO
+For tesseract more than 100 languages are available.
+In this image the languages `de,en,fr,es,pt*` are included.
 
+If you need more languages in one specific container, you could log into the container (described in: [Container shell access](#container-shell-access))
+and list all available languages with:
+
+    $ apt-cache search tesseract-ocr
+
+And install the disered ones using:
+
+    $ apt-get install tesseract-ocr-`LANGUAGE(-BUNDLE) NAME`
+
+If you need it in the image definition itself, you should fork this repository and implement another instruction to the Dockerfile.
+
+If you're implementing a reliable solution (like specification via environment variables), we'd like to get your pull-request for it.
 
 # Extending / changing / customization
 
@@ -169,7 +186,7 @@ Where the tag number should be adjusted.
 
 Previously to delete the current container:
 
-    docker rm -f \`docker container ls -f "ancestor=rspub/ocr-api:0.0.5" -q\`
+    docker rm -f `docker container ls -f "ancestor=rspub/ocr-api:0.0.5" -q`
 
 Build the new one from the local directoy
 
@@ -180,7 +197,8 @@ And run it
     docker run -d -p 5000:5000 rspub/ocr-api:0.0.5
 
 All commands quickly concatenated:
-    docker rm -f \`docker container ls -f "ancestor=rspub/ocr-api:0.0.5" -q\` && docker build -t rspub/ocr-api:0.0.5 . && docker run -d -p 5000:5000 rspub/ocr-api:0.0.5
+
+    docker rm -f `docker container ls -f "ancestor=rspub/ocr-api:0.0.5" -q` && docker build -t rspub/ocr-api:0.0.5 . && docker run -d -p 5000:5000 rspub/ocr-api:0.0.5
 
 
 # Copyright and license
