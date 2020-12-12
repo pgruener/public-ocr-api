@@ -14,15 +14,15 @@ service up and running in seconds.
 hood, to perform the *real work* of OCR recognition.
 
 OCRmyPDF itself makes use of HP/Googles tesseract library, which is a basic AI for character recognition. That's
-a huge advantage, as it is a well maintained project, which is in use in many real-word use cases and provides
-[100s of trained langauge data](https://github.com/tesseract-ocr/tessdata).
+a huge advantage, as it is a well-maintained project, which is in use in many real-word use cases and provides
+[100s of trained language data](https://github.com/tesseract-ocr/tessdata).
 
 Refer the up-to-date API: https://www.postman.com/rs-public
 
 # What is **Public OCR API definition** (POAD)?
 
 There are many software vendors and solutions, which are used to recognize text data of images or documents.
-And there are increasingly many use cases, which make it necessary to fullfil those requirements to proceed with digitalization.
+And there are increasingly many use cases, which make it necessary to fulfill those requirements to proceed with digitalization.
 
 The bad thing is, that all of those services have different interfaces.
 
@@ -41,9 +41,9 @@ As most of the vendors already implement some kind of a RESTful interface, it's 
 
 Especially, as our main goal is, to keep the interface as simple as possible.
 
-For all software solutions, which want to integrate a OCR software, should choose to implement **Public OCR API definition** (POAD).
-They can afterwards use this image, to integrate an open source solution, for their customers at no additional costs. If their
-customers needs another solution, they can simply choose between all **POA** supported vendors (ocr solution vendors, which support the
+For all software solutions, which want to integrate an OCR software, should choose to implement **Public OCR API definition** (POAD).
+They can afterwards use this image, to integrate an open-source solution, for their customers at no additional costs. If their
+customers' needs another solution, they can simply choose between all **POA** supported vendors (OCR Solution Vendors, which support the
 **POAD** interface). Now they can easily license other services and plug them in, without any additional efforts.
 
 # How to use this image
@@ -65,7 +65,7 @@ You can now browse to `http://your-servers-fqdn:5000` and recognize the characte
 
 ## ... via docker stack deploy or docker-compose
 
-Exampe `poa-stack.yml` file for POA:
+Example `poa-stack.yml` file for POA:
 
     version: '3.7'
     services:
@@ -108,15 +108,15 @@ When you start the POA image, you can adjust the configuration of the instance's
 ## OCR_SANDBOX_PROCESSING
 
 Indicates if the container should run in sandbox mode.
-Usually you won't use this, as it's only purpose is to display some more information on the website, which informs the user, that this instance is a sandbox and might
+Usually you won't use this, as its only purpose is to display some more information on the website, which informs the user, that this instance is a sandbox and might
 be restricted and limited in its functionality.
 
 ## OCR_SYSTEM_LANG
 
-Defines the default language of the webinterface. Currently only **en** and **de** are supported.
+Defines the default language of the web interface. Currently only **en** and **de** are supported.
 
 The language is automatically influenced by the visitor's browser.
-If the visitor's preferred language is english, he'll get the page in english, no matter which setting
+If the visitor's preferred language is English, he'll get the page in English, no matter which setting
 was chosen here.
 
 It's just the fallback value for those, who don't speak a supported language or prevented their browser
@@ -126,7 +126,7 @@ from sending a preferred language.
 
 Defines the system language.
 This defines the default language for OCR recognition, if no language was defined in the requests.
-That only makes sense, if you run this container only for documents of one single language. If you dont
+That only makes sense, if you run this container only for documents of one single language. If you don't
 know, which languages will be used on your images/documents, you should keep it empty as well as the
 language parameter in the REST API.
 
@@ -141,11 +141,11 @@ allows the parameter **fromPage** to set the starting point.
 
 ## OMP_THREAD_LIMIT
 
-The documents will be processed in severall processes on all available CPUs. And each process will distribute
+The documents will be processed in several processes on all available CPUs. And each process will distribute
 its work over several threads.
 
-There are situations and CPU architectures, where the single-threaded recogonition is faster than the multithreaded.
-With this parameter you can influence the amount of threads in each parallel process to test, which setting fits
+There are situations and CPU architectures, where the single-threaded recognition is faster than the multithreaded.
+With this parameter you can influence the number of threads in each parallel process to test, which setting fits
 most for you.
 
 
@@ -159,7 +159,7 @@ and list all available languages with:
 
     $ apt-cache search tesseract-ocr
 
-And install the disered ones using:
+And install the desired ones using:
 
     $ apt-get install tesseract-ocr-`LANGUAGE(-BUNDLE) NAME`
 
@@ -189,7 +189,7 @@ Previously to delete the current container:
 
     docker rm -f `docker container ls -f "ancestor=rspub/ocr-api:0.0.5" -q`
 
-Build the new one from the local directoy
+Build the new one from the local directory
 
     docker build -t rspub/ocr-api:0.0.5 .
 
