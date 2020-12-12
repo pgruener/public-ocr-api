@@ -3,7 +3,7 @@
 - Maintained by: [Royal Software GmbH](https://royal-software.de/email-ocr/)
 - Where to get help: [the Docker Community Forums](https://forums.docker.com/), [create a ticket on Github](https://github.com/pgruener/public-ocr-api)
 
-# What is Public OCR API? (POA)
+# What is **Public OCR API** (POA)?
 
 Public OCR API is an HTTP webservice (based on NodeJS), which implements the **Public OCR API definition** (POAD).
 
@@ -18,7 +18,7 @@ a huge advantage, as it is a well maintained project, which is in use in many re
 [100s of trained langauge data](https://github.com/tesseract-ocr/tessdata).
 
 
-# What is the **Public OCR API definition** (POAD)?
+# What is **Public OCR API definition** (POAD)?
 
 There are many software vendors and solutions, which are used to recognize text data of images or documents.
 And there are increasingly many use cases, which make it necessary to fullfil those requirements to proceed with digitalization.
