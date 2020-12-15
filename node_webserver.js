@@ -187,7 +187,10 @@ function callOcr(opts, cmdArguments) {
 
         opts.errorMessage += 'Input file was an invalid image with alpha, with too small DPI or with unknown DPI; converting to pdf before ...\n';
 
+        // TODO: should do this synchronously! And probably it's possible to pipe the output directly to ocrmypdf, which wouldnt create a further tmp file.
         execSync(`/usr/bin/convert -quality 100 -strip ${opts.sourceFile} ${opts.sourceFile}.pdf`);
+        // execSync(`convert ${opts.sourceFile} -background white -alpha remove -alpha off ${opts.sourceFile}.noalpha`);
+        // execSync(`/usr/local/bin/img2pdf ${opts.sourceFile}.noalpha > ${opts.sourceFile}.pdf`);
         opts.sourceFile = `${opts.sourceFile}.pdf`; // adjust source file
 
         callOcr(opts, cmdArguments);
