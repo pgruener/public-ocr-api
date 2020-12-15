@@ -158,6 +158,7 @@ app.post('/ocr/:version/parseDocument', urlencodedParser, (req, res) => {
   callOcr({
     req: req,
     res: res,
+    acceptsJson: !!req.get('accept').match(/\/json$/),
     sourceFile: sourceFile,
     outFile: `/tmp/uploads/${filenameRandom}_out${fileExtension}`,
     returnPdf: returnPdf
@@ -213,7 +214,7 @@ function callOcr(opts, cmdArguments) {
         }
       });
 
-      if (opts.req.accepts('json')) { // json
+      if (opts.acceptsJson) { // json
         opts.res.writeHead(201, { 'Content-Type': 'application/json' });
 
         if (opts.returnPdf) { // add full pdfa to response object
@@ -245,7 +246,9 @@ function callOcr(opts, cmdArguments) {
 function returnError(req, error, res, status) {
   res.status(status || 500);
 
-  if (req.accepts('json')) {
+  let acceptsJson = !!req.get('accept').match(/\/json$/);
+
+  if (acceptsJson) {
     res.end(JSON.stringify({ error: error }));
   } else {
     res.render('error', { error: error });
