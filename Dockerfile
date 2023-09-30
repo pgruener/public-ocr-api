@@ -1,4 +1,4 @@
-FROM jbarlow83/ocrmypdf:v11.3.3
+FROM jbarlow83/ocrmypdf:v15.0.2
 
 RUN apt-get update
 RUN apt-get -y install imagemagick
