@@ -6,9 +6,9 @@ RUN apt-get -y install imagemagick
 # install nodejs
 ###############################################################
 RUN apt-get -y install curl gnupg imagemagick
-RUN curl -sL https://deb.nodesource.com/setup_15.x  | bash -
+RUN curl -sL https://deb.nodesource.com/setup_20.x  | bash -
 RUN apt-get -y install nodejs
-RUN /usr/bin/npm install --save child_process fs express express-fileupload body-parser ejs i18next i18next-express-middleware i18next-node-fs-backend
+RUN /usr/bin/npm install --save child_process fs express express-fileupload body-parser ejs i18next i18next-http-middleware i18next-node-fs-backend
 
 # install crontab
 ###############################################################
@@ -29,5 +29,7 @@ COPY locales /app/locales
 COPY node_webserver.js /app
 
 VOLUME /var/log/ocr
+
+EXPOSE 5000
 
 ENTRYPOINT ["/usr/bin/node", "/app/node_webserver"]

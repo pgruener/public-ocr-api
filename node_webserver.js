@@ -4,7 +4,7 @@ const path = require('path');
 
 const i18next = require('i18next');
 const i18nFsBackend = require('i18next-node-fs-backend');
-const middleware = require('i18next-express-middleware');
+const middleware = require('i18next-http-middleware');
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
@@ -55,6 +55,7 @@ i18next.init({
 i18next.
   use(middleware.LanguageDetector).init({
     order: ['querystring', 'header'],
+    preload: ['en', 'de'],
     lookupQuerystring: 'language' // Doesn't currently work, *lng* (the default) is used instead.
   });
 
@@ -107,7 +108,7 @@ app.post('/ocr/:version/parseDocument', urlencodedParser, (req, res) => {
   let filenameRandom = Math.floor(Math.random() * 9999999);
   let sourceFile = `/tmp/uploads/${filenameRandom}${fileExtension}`;
   let returnPdf = !!req.body.returnPdf;
-  
+
   fs.writeFileSync(sourceFile, uploadedFile.data);
 
   // prepare binary call
@@ -163,7 +164,7 @@ app.post('/ocr/:version/parseDocument', urlencodedParser, (req, res) => {
     outFile: `/tmp/uploads/${filenameRandom}_out${fileExtension}`,
     returnPdf: returnPdf
   }, cmdArguments);
-  
+
 });
 
 function callOcr(opts, cmdArguments) {
